@@ -12,7 +12,7 @@
     "test": "turbo run test",
     "lint": "turbo run lint",
     "clean": "turbo run clean",
-    "example:hono": "bun --filter @example/hono-drizzle dev",
+    "example:hono": "bun --filter @example/hono-app dev",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "turbo run build && changeset publish"

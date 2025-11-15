@@ -7,6 +7,10 @@ export * from './types'
 export * from './controller'
 export * from './router'
 export * from './route'
+export * from './factory'
+export * from './request-parser'
+export * from './schema'
+export * from './utils'
 
 // just for convenience
 export { createCoreController } from './controller'

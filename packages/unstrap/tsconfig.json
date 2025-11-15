@@ -2,7 +2,9 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "outDir": "./dist",
-        "rootDir": "./src"
+        "rootDir": "./src",
+        "composite": false, // Remove composite for tsup
+        "incremental": false // Remove incremental for tsup
     },
     "include": [
         "src"
