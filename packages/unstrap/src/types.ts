@@ -38,7 +38,7 @@ export interface FindOptions {
     pagination?: { page: number; pageSize: number };
 }
 
-export type ControllerMethod = (ctx: any) => Promise<any>;
+export type ControllerMethod = (ctx: RequestContext) => Promise<any>;
 
 export interface CoreController {
     find: ControllerMethod;
@@ -62,8 +62,39 @@ export interface CoreRouterOptions {
     };
 }
 
+
+// Common request contex, we will need framework specific adapter to convert into this context
+export interface RequestContext {
+    req: {
+        method: string;
+        path: string;
+        query: Record<string, any>;
+        params: Record<string, string>;
+        headers: Record<string, string>;
+        body?: any; // Parsed body (already awaited)
+        json: () => Promise<any>;
+        text: () => Promise<string>;
+        formData?: () => Promise<FormData>;
+    };
+    res: {
+        json: (data: any, status?: number) => Response;
+        text: (data: string, status?: number) => Response;
+        redirect: (url: string, status?: number) => Response;
+        status: (code: number) => Response;
+    };
+    // For storing middleware data (user, session, etc.) just like what hono did
+    get: (key: string) => any;
+    set: (key: string, value: any) => void;
+    // Raw & framework context (escape door to get into raw requst)
+    raw?: any;
+    framework?: any
+}
+
+export type RepositoryFactory = <T = any>(schemaName: SchemaName) => Repository<T>;
+
 export interface FactoryContext {
-    repository: Repository;
+    repository: RepositoryFactory;
+    schemas: SchemaRegistry
     // service?: any;
     // db?: DatabaseAdapter;
 }
@@ -97,3 +128,34 @@ export interface FactoryContext {
 //     limit?: number;
 //     offset?: number;
 // }
+
+
+// ===== For schema definition just like strapi collection-type
+
+// Helper type to extract schema names
+export type SchemaRegistry = Record<string, SchemaDefinition>;
+
+export interface SchemaConfig<TTable = any> {
+    kind: 'collectionType' | 'singleType';
+    collectionName: string;
+    tableName: TTable;
+    info: {
+        singularName: string;
+        pluralName: string;
+        displayName: string;
+        description?: string;
+    };
+    validation?: {
+        insert?: any;
+        update?: any;
+    };
+    options?: {
+        timestamps?: boolean;
+        draftAndPublish?: boolean;
+    };
+}
+
+export interface SchemaDefinition<TTable = any> extends SchemaConfig<TTable> {
+    // Additional runtime properties added by factory
+    _validated: true;
+}
