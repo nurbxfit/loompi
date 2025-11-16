@@ -4,15 +4,20 @@
     "private": true,
     "scripts": {
         "dev": "bun run --hot src/index.ts",
-        "build": "bun build src/index.ts --outdir dist"
+        "build": "bun build src/index.ts --outdir dist --target=bun"
     },
     "dependencies": {
-        "unstrap": "workspace:*",
+        "@unstrap/drizzle": "workspace:*",
         "@unstrap/hono": "workspace:*",
+        "drizzle-orm": "^0.44.7",
+        "drizzle-zod": "^0.8.3",
         "hono": "^4.0.0",
-        "drizzle-orm": "^0.30.0"
+        "unstrap": "workspace:*",
+        "zod": "4.1.12"
     },
     "devDependencies": {
-        "@types/bun": "latest"
+        "@types/bun": "latest",
+        "better-sqlite3": "^12.4.1",
+        "drizzle-kit": "^0.31.7"
     }
 }

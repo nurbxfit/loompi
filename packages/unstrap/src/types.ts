@@ -167,6 +167,16 @@ export interface SchemaConfig<TTable = any> {
         timestamps?: boolean;
         draftAndPublish?: boolean;
     };
+    hooks?: {
+        repository?: {
+            beforeCreate?: (data: any) => any | Promise<any>;
+            afterCreate?: (data: any) => void | Promise<void>;
+            beforeUpdate?: (id: any, data: any) => void | Promise<any>;
+        },
+        // controller?: {
+
+        // }
+    }
 }
 
 export interface SchemaDefinition<TTable = any> extends SchemaConfig<TTable> {

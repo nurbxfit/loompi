@@ -1,0 +1,40 @@
+{
+    "name": "@unstrap/drizzle",
+    "version": "0.1.0",
+    "description": "Drizzle ORM adapter for unstrap",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "require": "./dist/index.js",
+            "import": "./dist/index.mjs"
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "unstrap": "workspace:*"
+    },
+    "peerDependencies": {
+        "drizzle-orm": "^0.44.7"
+    },
+    "devDependencies": {
+        "drizzle-orm": "^0.44.7",
+        "tsup": "8.5.1",
+        "typescript": "^5.9.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nurbxfit/unstrap",
+        "directory": "packages/unstrap-drizzle"
+    },
+    "license": "MIT"
+}
