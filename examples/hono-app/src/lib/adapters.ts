@@ -6,7 +6,7 @@ import { RequestContext } from "unstrap";
 // temporary adapter ?? will moved it into its own packages folder.
 // now just testing.
 
-export function honoContextAdapter(c: Context): RequestContext {
+export function honoToRequestContextAdapter(c: Context): RequestContext {
     // Internal state for ctx.get() / ctx.set()
     const state = new Map<string, any>();
     return {

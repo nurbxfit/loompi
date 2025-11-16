@@ -5,6 +5,6 @@ import { schemas } from "@/schemas";
 
 
 export const factories = createFactory({
-    repository: mockRepoFactory, // issue is here,
+    repository: mockRepoFactory,
     schemas: schemas
 })

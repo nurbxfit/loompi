@@ -14,5 +14,5 @@ export * from './utils'
 
 // just for convenience
 export { createCoreController } from './controller'
-export { createRouter } from './router'
-export { createCoreRoutes, createCustomeRoutes } from './route'
+export { createRouterMappings } from './router'
+export { createCoreRoutes, createCustomRoutes } from './route'

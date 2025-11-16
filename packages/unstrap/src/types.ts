@@ -49,6 +49,8 @@ export interface CoreController {
     [key: string]: ControllerMethod;
 }
 
+export type ControllerRegistry = Record<string, CoreController>
+
 export interface CoreRouterOptions {
     prefix?: string;
     only?: Array<'find' | 'findOne' | 'create' | 'update' | 'delete'>;
@@ -60,6 +62,18 @@ export interface CoreRouterOptions {
         update?: RouteConfig;
         delete?: RouteConfig;
     };
+}
+
+export interface RouteMapping {
+    method: 'get' | 'post' | 'put' | 'delete' | 'patch';
+    path: string;
+    handler: Function;
+    middlewares: MiddlewareHandler[];
+    // config: {
+    //     auth: boolean;
+    //     policies?: any[];
+    //     middlewares?: any[];
+    // };
 }
 
 
@@ -92,9 +106,9 @@ export interface RequestContext {
 
 export type RepositoryFactory = <T = any>(schemaName: SchemaName) => Repository<T>;
 
-export interface FactoryContext {
+export interface FactoryContext<S extends SchemaRegistry = SchemaRegistry> {
     repository: RepositoryFactory;
-    schemas: SchemaRegistry
+    schemas: S
     // service?: any;
     // db?: DatabaseAdapter;
 }

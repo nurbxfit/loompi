@@ -1,12 +1,12 @@
 import { parseFilters, parsePagination, parseSort } from "./request-parser";
-import { ControllerMethod, CoreController, FactoryContext, SchemaName } from "./types";
+import { ControllerMethod, CoreController, FactoryContext, SchemaName, SchemaRegistry } from "./types";
 import { createPaginationResponse } from "./utils";
 
 // TODO
-export function createCoreController<T extends SchemaName>(
-    context: FactoryContext,
-    schemaName: T,
-    extensions?: (ctx: FactoryContext) => Partial<CoreController> & Record<string, ControllerMethod>
+export function createCoreController<S extends SchemaRegistry>(
+    context: FactoryContext<S>,
+    schemaName: keyof S,
+    extensions?: (ctx: FactoryContext<S>) => Partial<CoreController>
 ) {
 
     const { repository, schemas } = context;
@@ -22,7 +22,7 @@ export function createCoreController<T extends SchemaName>(
                 const sort = parseSort(query);
 
                 // eg: schemaName = api::user.user 
-                const { data, total } = await repository(schemaName).find({
+                const { data, total } = await repository(schemaName as string).find({
                     filters,
                     pagination,
                     sort
@@ -45,7 +45,7 @@ export function createCoreController<T extends SchemaName>(
         async findOne(ctx) {
             try {
                 const id = ctx.req.params.id;
-                const repo = repository(schemaName);
+                const repo = repository(schemaName as string);
 
                 const data = await repo.findOne(id);
 
@@ -78,7 +78,7 @@ export function createCoreController<T extends SchemaName>(
                 }
 
 
-                const repo = repository(schemaName);
+                const repo = repository(schemaName as string);
 
                 const data = await repo.create(body);
 
@@ -112,7 +112,7 @@ export function createCoreController<T extends SchemaName>(
                     }
                 }
 
-                const repo = repository(schemaName);
+                const repo = repository(schemaName as string);
 
                 const data = await repo.update(id, body);
 
@@ -130,7 +130,7 @@ export function createCoreController<T extends SchemaName>(
             try {
                 const id = ctx.req.params.id;
                 const body = await ctx.req.json();
-                const repo = repository(schemaName);
+                const repo = repository(schemaName as string);
 
                 const data = await repo.delete(id);
 

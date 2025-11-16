@@ -1,21 +1,22 @@
 import { createCoreController } from "./controller";
-import { createCoreRoutes, createCustomeRoutes } from "./route";
-import { ControllerMethod, CoreController, CoreRouterOptions, FactoryContext, SchemaName } from "./types";
+import { createCoreRoutes } from "./route";
+import { ControllerMethod, CoreController, CoreRouterOptions, FactoryContext, SchemaName, SchemaRegistry } from "./types";
 
 
-export function createFactory(context: FactoryContext) {
+// S extends SchemaRegistry for better type completion
+export function createFactory<S extends SchemaRegistry>(context: FactoryContext<S>) {
     return {
-        createCoreController: <T extends keyof typeof context.schemas>(schemaName: T, extensions?: (ctx: FactoryContext) => Partial<CoreController> & Record<string, ControllerMethod>) => {
-            return createCoreController(context, schemaName, extensions);
+        createCoreController: <T extends keyof S>(
+            schemaName: T,
+            extensions?: (ctx: FactoryContext<S>) => Partial<CoreController>
+        ) => {
+            return createCoreController(context, schemaName as string, extensions);
         },
-        createCoreRoutes: <T extends SchemaName>(
+        createCoreRoutes: <T extends keyof S>(
             schemaName: T,
             options?: CoreRouterOptions
         ) => {
-            return createCoreRoutes() // todo 
-        },
-        createCustomeRoutes: () => {
-            return createCustomeRoutes(); // todo
+            return createCoreRoutes(context, schemaName as string, options) // todo 
         }
     }
 }
