@@ -2,9 +2,6 @@ import { Hono } from 'hono';
 import { logger } from 'hono/logger';
 import usersModule from './api/users';
 
-// import userController from '@/api/users/controllers/user';
-// import { honoToRequestContextAdapter } from './lib/adapters';
-
 const app = new Hono();
 
 app.use('*', logger());

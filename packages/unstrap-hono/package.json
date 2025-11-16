@@ -1,0 +1,40 @@
+{
+    "name": "@unstrap/hono",
+    "version": "0.1.0",
+    "description": "Hono framework adapter for unstrap",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "unstrap": "workspace:*"
+    },
+    "peerDependencies": {
+        "hono": "^4.0.0"
+    },
+    "devDependencies": {
+        "hono": "^4.0.0",
+        "tsup": "8.5.1",
+        "typescript": "^5.9.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nurbxfit/unstrap",
+        "directory": "packages/unstrap-hono"
+    },
+    "license": "MIT"
+}

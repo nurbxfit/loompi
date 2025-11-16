@@ -1,18 +1,14 @@
 import { Context, Hono } from "hono";
 import { ControllerRegistry, createRouterMappings, RouteDefinition } from "unstrap";
-import { honoToRequestContextAdapter } from "./adapters";
+import { honoToRequestContextAdapter } from "./request";
 
-/**
- * Temporary, for testing, I will moved it into unstrap-hono adapter
- */
+
 export function createRouter(
     app: Hono,
     routeDefinitions: RouteDefinition[],
     controllers: ControllerRegistry
 ): Hono {
     const mappings = createRouterMappings(routeDefinitions, controllers);
-
-    // we takes the mappings, and then register to Hono app
     mappings.forEach((mappings) => {
         const { method, path, handler, middlewares } = mappings
 
@@ -21,6 +17,10 @@ export function createRouter(
             return handler(ctx);
         }
 
+        /**
+         * TODO: Need to decide if middleware receive 
+         * our requestContext or hono context.
+         */
         // const honoMiddleware = middlewares.map(mw => {
         //     return async (c: Context, next: () => Promise<void>) => {
         //         const ctx = honoToRequestContextAdapter(c);

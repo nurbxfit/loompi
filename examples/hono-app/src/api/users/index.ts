@@ -1,4 +1,4 @@
-import { createRouter } from "@/lib/router";
+import { createRouter } from "@unstrap/hono";
 import { Hono } from "hono";
 import userRoutes from '@/api/users/routes/user';
 import userController from '@/api/users/controllers/user';

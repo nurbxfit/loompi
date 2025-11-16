@@ -8,6 +8,7 @@
     },
     "dependencies": {
         "unstrap": "workspace:*",
+        "@unstrap/hono": "workspace:*",
         "hono": "^4.0.0",
         "drizzle-orm": "^0.30.0"
     },
