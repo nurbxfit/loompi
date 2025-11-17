@@ -146,6 +146,15 @@ export interface FactoryContext<S extends SchemaRegistry = SchemaRegistry> {
 
 // ===== For schema definition just like strapi collection-type
 
+/**
+ * Controller hooks can modify data for the response
+ * IMPORTANT: Do NOT return ctx.res.json() - only return data or void
+ */
+export type ControllerHook<T = any> = (
+    ctx: RequestContext,
+    data: T
+) => T | void | Promise<T | void>;
+
 // Helper type to extract schema names
 export type SchemaRegistry = Record<string, SchemaDefinition>;
 
@@ -159,10 +168,7 @@ export interface SchemaConfig<TTable = any> {
         displayName: string;
         description?: string;
     };
-    validation?: {
-        insert?: any;
-        update?: any;
-    };
+
     options?: {
         timestamps?: boolean;
         draftAndPublish?: boolean;
@@ -171,12 +177,31 @@ export interface SchemaConfig<TTable = any> {
         repository?: {
             beforeCreate?: (data: any) => any | Promise<any>;
             afterCreate?: (data: any) => void | Promise<void>;
-            beforeUpdate?: (id: any, data: any) => void | Promise<any>;
-        },
-        // controller?: {
+            beforeUpdate?: (id: any, data: any) => any | Promise<any>;
+            afterUpdate?: (data: any) => void | Promise<void>;
+        };
+        controller?: {
+            beforeCreate?: ControllerHook;
+            afterCreate?: ControllerHook;  // using type check to prevent user return ctx,
+            beforeUpdate?: (ctx: RequestContext, id: any, data: any) => any | Promise<any>;
+            afterUpdate?: ControllerHook;
+        };
+    };
 
-        // }
-    }
+    validation?: {
+        // New structure
+        db?: {
+            insert?: any;  // Zod schema
+            update?: any;  // Zod schema
+        };
+        request?: {
+            create?: any;  // Zod schema
+            update?: any;  // Zod schema
+            // updateAdmin?: any;  // TODO:: Optional admin schema
+            // [key: string]: any;  // TODO :: Allow custom validation schemas
+        };
+
+    };
 }
 
 export interface SchemaDefinition<TTable = any> extends SchemaConfig<TTable> {

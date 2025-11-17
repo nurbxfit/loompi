@@ -70,12 +70,12 @@ export function createCoreController<S extends SchemaRegistry>(
                     return ctx.res.json(validatedBody.error, 400);
                 }
 
-                const data = body.data;
+                let data = body.data;
 
-                // we help do validation here
-                if (schema?.validation?.insert) {
-                    const insertValidator = schema.validation.insert as ZodObject;
-                    const result = insertValidator.safeParse(data);
+                // we help do validation on the request here
+                const requestSchema = schema?.validation?.request?.create as ZodObject;   // Fallback
+                if (requestSchema) {
+                    const result = requestSchema.safeParse(data);
 
                     if (!result.success) {
                         return ctx.res.json(
@@ -83,12 +83,42 @@ export function createCoreController<S extends SchemaRegistry>(
                             400
                         );
                     }
+
+                    data = result.data; // use zod sanitized data
+                }
+
+                // call controller hook before repository hook, if available (beforeCreate)
+
+                if (schema.hooks?.controller?.beforeCreate) {
+                    data = await schema.hooks.controller.beforeCreate(ctx, data);
                 }
 
 
                 const repo = repository(schemaName as string);
 
-                const result = await repo.create(data);
+                // Repo hook will be called inside the repo implementation
+                let result = await repo.create(data);
+
+                // call controller hook if available (afterCreate)
+                if (schema?.hooks?.controller?.afterCreate) {
+                    const hookResult = await schema.hooks.controller.afterCreate(ctx, result);
+
+                    // Check if hook incorrectly returned a Response
+                    if (isResponse(hookResult)) {
+                        console.error(
+                            `[Unstrap] Error: controller.afterCreate hook returned a Response object. ` +
+                            `Hooks should return data (not ctx.res.json()). Schema: ${String(schemaName)}`
+                        );
+                        throw new Error(
+                            'Controller hooks must return data, not Response objects. ' +
+                            'Do not use ctx.res.json() in hooks.'
+                        );
+                    }
+
+                    if (hookResult !== undefined) {
+                        result = hookResult;
+                    }
+                }
 
                 return ctx.res.json({ data: result }, 201);
 
@@ -107,10 +137,12 @@ export function createCoreController<S extends SchemaRegistry>(
                     return ctx.res.json(validatedBody.error, 400);
                 }
 
-                const data = body.data;
+                let data = body.data;
 
-                if (schema?.validation?.update) {
-                    const result = schema.validation.update.safeParse(data);
+                const requestSchema = schema?.validation?.request?.update as ZodObject
+
+                if (requestSchema) {
+                    const result = requestSchema.safeParse(data);
 
                     if (!result.success) {
                         return ctx.res.json(
@@ -118,14 +150,46 @@ export function createCoreController<S extends SchemaRegistry>(
                             400
                         );
                     }
+
+
+                    data = result.data; // use zod sanitized data, user need to use strict on their schema definition
+                }
+
+                // beforeUpdate hook
+                if (schema?.hooks?.controller?.beforeUpdate) {
+                    const hookResult = await schema.hooks.controller.beforeUpdate(ctx, id, data);
+                    if (hookResult !== undefined) {
+                        data = hookResult;
+                    }
                 }
 
                 const repo = repository(schemaName as string);
 
-                const result = await repo.update(id, data);
+                let result = await repo.update(id, data);
 
                 if (!result) {
                     return handleNotFoundError(ctx, id);
+                }
+
+                // afterUpdate hook
+                if (schema?.hooks?.controller?.afterUpdate) {
+                    const hookResult = await schema.hooks.controller.afterUpdate(ctx, result);
+
+                    // Check if hook incorrectly returned a Response
+                    if (isResponse(hookResult)) {
+                        console.error(
+                            `[Unstrap] Error: controller.afterUpdate hook returned a Response object. ` +
+                            `Schema: ${String(schemaName)}`
+                        );
+                        throw new Error(
+                            'Controller hooks must return data, not Response objects. ' +
+                            'Do not use ctx.res.json() in hooks.'
+                        );
+                    }
+
+                    if (hookResult !== undefined) {
+                        result = hookResult;
+                    }
                 }
 
                 return ctx.res.json({ data: result });
@@ -137,13 +201,12 @@ export function createCoreController<S extends SchemaRegistry>(
         async delete(ctx) {
             try {
                 const id = ctx.req.params.id;
-                const body = await ctx.req.json();
                 const repo = repository(schemaName as string);
 
                 const data = await repo.delete(id);
 
                 if (!data) {
-                    return ctx.res.json({ error: 'Not found' }, 404);
+                    return handleNotFoundError(ctx, id);
                 }
 
                 return ctx.res.json({ data });
@@ -165,3 +228,11 @@ export function createCoreController<S extends SchemaRegistry>(
     return coreController;
 }
 
+
+function isResponse(value: any): boolean {
+    return value &&
+        typeof value === 'object' &&
+        (value instanceof Response ||
+            value.constructor?.name === 'Response' ||
+            (value.status !== undefined && value.headers !== undefined));
+}
