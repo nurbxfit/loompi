@@ -49,7 +49,11 @@ export interface CoreController {
     [key: string]: ControllerMethod;
 }
 
+export type CustomController = Record<string, ControllerMethod>;
+
 export type ControllerRegistry = Record<string, CoreController>
+
+export type ControllerExtensionsDefinition = Partial<CoreController> & CustomController;
 
 export interface CoreRouterOptions {
     prefix?: string;
