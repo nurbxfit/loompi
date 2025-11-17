@@ -1,6 +1,6 @@
 import { SQL, and, or, eq, ne, gt, gte, lt, lte, like, ilike, inArray, notInArray, isNull, isNotNull, between, not, asc, desc, sql } from 'drizzle-orm';
 import type { SQLiteTable } from 'drizzle-orm/sqlite-core';
-import { ParsedFilters } from 'unstrap';
+import { ParsedFilters } from 'loompi';
 
 export function buildWhereClause(
     table: SQLiteTable,

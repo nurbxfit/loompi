@@ -1,4 +1,4 @@
-import type { Repository, FindOptions, RepositoryFactory } from 'unstrap';
+import type { Repository, FindOptions, RepositoryFactory } from 'loompi';
 
 export class MockRepository implements Repository {
     async find(options: FindOptions): Promise<{ data: any[]; total: number }> {

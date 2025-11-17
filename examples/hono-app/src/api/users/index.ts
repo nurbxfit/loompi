@@ -1,9 +1,9 @@
-import { createRouter } from "@unstrap/hono";
+import { createRouter } from "@loompi/hono";
 import { Hono } from "hono";
 import userRoutes from '@/api/users/routes/user';
 import customUserRoutes from '@/api/users/routes/custom-user';
 import userController from '@/api/users/controllers/user';
-import { ControllerRegistry, CoreController } from "unstrap";
+import { ControllerRegistry, CoreController } from "loompi";
 
 const controllers: ControllerRegistry = {
     "api::user.user": userController as CoreController

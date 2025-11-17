@@ -1,6 +1,6 @@
-import { createFactory } from "unstrap";
+import { createFactory } from "loompi";
 import { schemas } from "@/schemas";
-import { createDrizzleRepositoryFactory } from "@unstrap/drizzle";
+import { createDrizzleRepositoryFactory } from "@loompi/drizzle";
 import { db } from "./database";
 
 

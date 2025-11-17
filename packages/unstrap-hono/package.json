@@ -1,7 +1,7 @@
 {
-    "name": "@unstrap/hono",
+    "name": "@loompi/hono",
     "version": "0.1.0",
-    "description": "Hono framework adapter for unstrap",
+    "description": "Hono framework adapter for loompi",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
@@ -21,7 +21,7 @@
         "clean": "rm -rf dist"
     },
     "dependencies": {
-        "unstrap": "workspace:*"
+        "loompi": "workspace:*"
     },
     "peerDependencies": {
         "hono": "^4.0.0"
@@ -33,8 +33,8 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/nurbxfit/unstrap",
-        "directory": "packages/unstrap-hono"
+        "url": "https://github.com/nurbxfit/loompi",
+        "directory": "packages/loompi-hono"
     },
     "license": "MIT"
 }

@@ -1,5 +1,5 @@
 {
-    "name": "unstrap",
+    "name": "loompi",
     "version": "0.1.0",
     "description": "Core package for Framework-agnostic API factory toolkit inspired by Strapi",
     "main": "./dist/index.js",
@@ -41,8 +41,8 @@
     "peerDependencies": {},
     "repository": {
         "type": "git",
-        "url": "https://github.com/nurbxfit/unstrap",
-        "directory": "packages/unstrap"
+        "url": "https://github.com/nurbxfit/loompi",
+        "directory": "packages/loompi"
     },
     "license": "MIT"
 }

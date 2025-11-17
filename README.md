@@ -1,4 +1,4 @@
-# Unstrap
+# loompi
 
 > Framework-agnostic API factory inspired by Strapi - build type-safe CRUD APIs with any framework and ORM
 
@@ -19,7 +19,7 @@
 
 ```bash
 # Install core + adapters
-bun add unstrap @unstrap/hono @unstrap/drizzle
+bun add loompi @loompi/hono @loompi/drizzle
 ```
 
 # Basic Usage
@@ -35,11 +35,11 @@ src/
  │       └─ routes/user.ts # where we call factory.createCoreRoutes
  ├─ schemas/
  │   ├─ index.ts       # aggregate all resource schemas into a single registry
- │   └─ user.ts        # where we define unstrap schema for user resource (strapi like schema)
+ │   └─ user.ts        # where we define loompi schema for user resource (strapi like schema)
  ├─ lib/
  │   ├─ auth.ts        # Your own rizzle + BetterAuth setup
  │   ├─ database.ts    # Your own Drizzle + SQLite setup
- │   └─ factory.ts     # where we instantiate Unstrap factory
+ │   └─ factory.ts     # where we instantiate loompi factory
  └─ middlewares/
      └─ token-guard.ts  # (optional) BetterAuth middleware
 
@@ -48,7 +48,7 @@ src/
 ### Example: src/schemas/user.ts
 ```ts
 import { user } from "@/db/user-schema";
-import { defineSchema } from "unstrap";
+import { defineSchema } from "loompi";
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod';
 
@@ -89,7 +89,7 @@ export default defineSchema({
 
 ```ts
 // src/schemas/index.ts
-import { SchemaRegistry } from "unstrap";
+import { SchemaRegistry } from "loompi";
 import userSchema from './user';
 
 export const schemas: SchemaRegistry = {
@@ -136,7 +136,7 @@ export default factories.createCoreRoutes("api::user.user")
 ```ts
 // src/api/users/routes/custom-user.ts
 
-import { createCustomRoutes } from "unstrap";
+import { createCustomRoutes } from "loompi";
 
 export default createCustomRoutes([
     {
@@ -169,12 +169,12 @@ src/
 In the `index.ts`, you can stich it up together into a router by calling the createRouter factory:
 
 ```ts
-import { createRouter } from "@unstrap/hono";
+import { createRouter } from "@loompi/hono";
 import { Hono } from "hono";
 import userRoutes from '@/api/users/routes/user';
 import customUserRoutes from '@/api/users/routes/custom-user';
 import userController from '@/api/users/controllers/user';
-import { ControllerRegistry, CoreController } from "unstrap";
+import { ControllerRegistry, CoreController } from "loompi";
 
 const controllers: ControllerRegistry = {
     "api::user.user": userController as CoreController

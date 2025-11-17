@@ -1,4 +1,4 @@
-import { SchemaRegistry } from "unstrap";
+import { SchemaRegistry } from "loompi";
 import userSchema from './user';
 
 export const schemas: SchemaRegistry = {

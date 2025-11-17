@@ -1,4 +1,4 @@
-import { Repository, RepositoryFactory, SchemaRegistry } from "unstrap";
+import { Repository, RepositoryFactory, SchemaRegistry } from "loompi";
 import { DrizzleRepository } from "./repository";
 
 export function createDrizzleRepositoryFactory(

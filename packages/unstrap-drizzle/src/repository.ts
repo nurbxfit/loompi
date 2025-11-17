@@ -1,4 +1,4 @@
-import { FindOptions, Repository, SchemaDefinition } from "unstrap";
+import { FindOptions, Repository, SchemaDefinition } from "loompi";
 import { buildOrderBy, buildWhereClause } from "./query-builder";
 import { eq, sql } from "drizzle-orm";
 
