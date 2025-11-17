@@ -1,5 +1,5 @@
 import { Context, Hono } from "hono";
-import { ControllerRegistry, createRouterMappings, RouteDefinition } from "unstrap";
+import { ControllerRegistry, createRouterMappings, RouteDefinition } from "loompi";
 import { honoToRequestContextAdapter } from "./request";
 
 

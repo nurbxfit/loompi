@@ -106,7 +106,7 @@ export function createCoreController<S extends SchemaRegistry>(
                     // Check if hook incorrectly returned a Response
                     if (isResponse(hookResult)) {
                         console.error(
-                            `[Unstrap] Error: controller.afterCreate hook returned a Response object. ` +
+                            `[loompi] Error: controller.afterCreate hook returned a Response object. ` +
                             `Hooks should return data (not ctx.res.json()). Schema: ${String(schemaName)}`
                         );
                         throw new Error(
@@ -178,7 +178,7 @@ export function createCoreController<S extends SchemaRegistry>(
                     // Check if hook incorrectly returned a Response
                     if (isResponse(hookResult)) {
                         console.error(
-                            `[Unstrap] Error: controller.afterUpdate hook returned a Response object. ` +
+                            `[loompi] Error: controller.afterUpdate hook returned a Response object. ` +
                             `Schema: ${String(schemaName)}`
                         );
                         throw new Error(

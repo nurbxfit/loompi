@@ -12,7 +12,7 @@ app.route('/api', usersModule);
 
 app.get('/', (c) => {
     return c.json({
-        message: 'Unstrap Example - Hono + Drizzle',
+        message: 'loompi Example - Hono + Drizzle',
         version: '1.0.0'
     });
 });

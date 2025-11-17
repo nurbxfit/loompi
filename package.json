@@ -1,5 +1,5 @@
 {
-  "name": "unstrap-monorepo",
+  "name": "loompi-monorepo",
   "version": "0.0.0",
   "private": true,
   "workspaces": [

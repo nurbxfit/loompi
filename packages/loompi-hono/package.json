@@ -1,7 +1,7 @@
 {
-    "name": "unstrap",
+    "name": "@loompi/hono",
     "version": "0.1.0",
-    "description": "Core package for Framework-agnostic API factory toolkit inspired by Strapi",
+    "description": "Hono framework adapter for loompi",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
@@ -13,36 +13,28 @@
         }
     },
     "files": [
-        "dist",
-        "README.md"
+        "dist"
     ],
     "scripts": {
         "build": "tsup",
         "dev": "tsup --watch",
-        "test": "bun test",
-        "clean": "rm-rf dist"
+        "clean": "rm -rf dist"
     },
-    "keywords": [
-        "api",
-        "factory",
-        "REST",
-        "framework-agnostic",
-        "typescript",
-        "strapi"
-    ],
     "dependencies": {
-        "zod": "4.1.12"
+        "loompi": "workspace:*"
+    },
+    "peerDependencies": {
+        "hono": "^4.0.0"
     },
     "devDependencies": {
-        "@types/bun": "latest",
-        "tsup": "^8.5.1",
+        "hono": "^4.0.0",
+        "tsup": "8.5.1",
         "typescript": "^5.9.3"
     },
-    "peerDependencies": {},
     "repository": {
         "type": "git",
-        "url": "https://github.com/nurbxfit/unstrap",
-        "directory": "packages/unstrap"
+        "url": "https://github.com/nurbxfit/loompi",
+        "directory": "packages/loompi-hono"
     },
     "license": "MIT"
 }

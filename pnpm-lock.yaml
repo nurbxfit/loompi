@@ -23,12 +23,12 @@ importers:
 
   examples/hono-app:
     dependencies:
-      '@unstrap/drizzle':
+      '@loompi/drizzle':
         specifier: workspace:*
-        version: link:../../packages/unstrap-drizzle
-      '@unstrap/hono':
+        version: link:../../packages/loompi-drizzle
+      '@loompi/hono':
         specifier: workspace:*
-        version: link:../../packages/unstrap-hono
+        version: link:../../packages/loompi-hono
       drizzle-orm:
         specifier: ^0.44.7
         version: 0.44.7(better-sqlite3@12.4.1)
@@ -38,9 +38,9 @@ importers:
       hono:
         specifier: ^4.0.0
         version: 4.10.6
-      unstrap:
+      loompi:
         specifier: workspace:*
-        version: link:../../packages/unstrap
+        version: link:../../packages/loompi
       zod:
         specifier: 4.1.12
         version: 4.1.12
@@ -55,7 +55,7 @@ importers:
         specifier: ^0.31.7
         version: 0.31.7
 
-  packages/unstrap:
+  packages/loompi:
     dependencies:
       zod:
         specifier: 4.1.12
@@ -71,11 +71,11 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/unstrap-drizzle:
+  packages/loompi-drizzle:
     dependencies:
-      unstrap:
+      loompi:
         specifier: workspace:*
-        version: link:../unstrap
+        version: link:../loompi
     devDependencies:
       drizzle-orm:
         specifier: ^0.44.7
@@ -87,11 +87,11 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/unstrap-hono:
+  packages/loompi-hono:
     dependencies:
-      unstrap:
+      loompi:
         specifier: workspace:*
-        version: link:../unstrap
+        version: link:../loompi
     devDependencies:
       hono:
         specifier: ^4.0.0

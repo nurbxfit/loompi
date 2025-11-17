@@ -1,5 +1,5 @@
 import { user } from "@/db/user-schema";
-import { defineSchema } from "unstrap";
+import { defineSchema } from "loompi";
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod';
 

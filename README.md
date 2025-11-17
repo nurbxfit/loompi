@@ -1,195 +1,211 @@
-# Unstrap
+# 🌱 loompi
 
-> Framework-agnostic API factory inspired by Strapi - build type-safe CRUD APIs with any framework and ORM
+A framework-agnostic Strapi-style API factory.
+Generate fully typed CRUD APIs (controllers + routes + validation + filtering) using your own framework and ORM.
 
-## 🎯 Features
+<p align="left"> <img src="https://img.shields.io/badge/status-alpha-blue" /> <img src="https://img.shields.io/badge/runtime-node%20%7C%20bun-green" /> <img src="https://img.shields.io/badge/framework-hono%20%7C%20express%20%7C%20fastify-yellow" /> <img src="https://img.shields.io/badge/orm-drizzle%20%7C%20prisma%20%7C%20kysely-purple" /> </p>
 
-- 🚀 **Framework Agnostic** - Works with Hono, Express, Fastify, and more
-- 🗄️ **ORM Agnostic** - Supports Drizzle, Prisma, Kysely, and more
-- 🔒 **Type-Safe** -  TypeScript support.
-- 🎨 **Strapi-like DX** - Familiar API inspired by Strapi v5
-- 🔌 **Extensible** - Easy to override controllers and add custom routes
-- 🛡️ **Built-in Auth** - Policy and middleware system included
-- 🔍 **Advanced Filtering** - Complex query filters with operators ($eq, $gt, $contains, etc.)
-- 📦 **Modular** - Use only what you need
+Loompi is a lightweight experiment I built for fun.
+It’s not a framework or a full solution.
 
+Just a collection of helpers that make it easier to set up basic typed CRUD endpoints using your own stack (Hono, Express, Drizzle, etc.).
 
+If you like Strapi’s schema → controller → routes idea but want something simple and code-based, this might be useful.
+
+## ✨ Features
+
+- 🚀 Framework Agnostic – Hono, Express, Fastify, or anything else
+- 🗄️ ORM Agnostic – Drizzle, Prisma, Kysely, etc.
+- 🧩 Auto-generated CRUD – find, findOne, create, update, delete
+- 🔒 Type-safe – first-class TypeScript everywhere
+- 🎨 Strapi-inspired DX – schemas & resource conventions
+- 🔌 Extendable – override controllers or add custom routes
+- 🛡️ Policies & Middlewares – simple authorization hooks
+- 🔍 Advanced Filtering – $eq, $gt, $in, $contains, etc.
+- 📦 Modular – you pick the framework & ORM
 
 ## 🚀 Quick Start
 
-```bash
-# Install core + adapters
-bun add unstrap @unstrap/hono @unstrap/drizzle
+Install Loompi + your adapters:
+```ts
+bun add loompi @loompi/hono @loompi/drizzle
 ```
+## 📁 Project Structure Example
 
-# Basic Usage
-
-## Folder Structure
-Example here is a folder structure of a simple hono + drizzle + BetterAuth setup with a `user` resource.
-
+A typical user resource using Hono + Drizzle + BetterAuth:
 ```
 src/
  ├─ api/
  │   └─ users/
- │       ├─ controllers/user.ts # where we call factory.createCoreController
- │       └─ routes/user.ts # where we call factory.createCoreRoutes
+ │       ├─ controllers/user.ts     # Core + custom controller
+ │       └─ routes/user.ts          # Core routes
  ├─ schemas/
- │   ├─ index.ts       # aggregate all resource schemas into a single registry
- │   └─ user.ts        # where we define unstrap schema for user resource (strapi like schema)
+ │   ├─ index.ts                    # Schema registry
+ │   └─ user.ts                     # Resource schema
  ├─ lib/
- │   ├─ auth.ts        # Your own rizzle + BetterAuth setup
- │   ├─ database.ts    # Your own Drizzle + SQLite setup
- │   └─ factory.ts     # where we instantiate Unstrap factory
+ │   ├─ auth.ts                     # Your auth logic
+ │   ├─ database.ts                 # Drizzle setup
+ │   └─ factories.ts                # Loompi factories
  └─ middlewares/
-     └─ token-guard.ts  # (optional) BetterAuth middleware
-
+     └─ token-guard.ts              # (optional) BetterAuth middleware
 ```
 
-### Example: src/schemas/user.ts
+## 🧱 Defining a Schema
 ```ts
+src/schemas/user.ts
+
 import { user } from "@/db/user-schema";
-import { defineSchema } from "unstrap";
+import { defineSchema } from "loompi";
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod';
 
 export default defineSchema({
-    kind: 'collectionType',
-    collectionName: 'user',
-    tableName: user,
-    info: {
-        singularName: 'user',
-        pluralName: 'users',
-        displayName: 'users',
-    },
-    hooks: { // we define a hook to auto-generate UUID for new users
-        repository: {
-            beforeCreate: (data) => {
-                if (!data.id) {
-                    data.id = crypto.randomUUID();
-                }
-                return data;
-            }
-        }
-    },
-    validation: { // we define validation schemas for create and update operations
-        insert: createInsertSchema(user, {
-            name: z.string(),
-            email: z.email(),
-        }).omit({ id: true, createdAt: true }),
-        update: createInsertSchema(user, {
-            name: z.string(),
-            email: z.email(),
-            image: z.url(),
-        }).omit({ id: true, createdAt: true }).partial(),
-    },
+  kind: 'collectionType',
+  collectionName: 'user',
+  tableName: user,
+
+  info: {
+    singularName: 'user',
+    pluralName: 'users',
+    displayName: 'Users',
+  },
+
+  hooks: {
+    repository: {
+      beforeCreate: (data) => {
+        if (!data.id) data.id = crypto.randomUUID();
+        return data;
+      }
+    }
+  },
+
+  validation: {
+    insert: createInsertSchema(user, {
+      name: z.string(),
+      email: z.string().email(),
+    }).omit({ id: true, createdAt: true }),
+
+    update: createInsertSchema(user, {
+      name: z.string(),
+      email: z.string().email(),
+      image: z.string().url(),
+    }).omit({ id: true, createdAt: true }).partial(),
+  },
 })
 ```
-
-### Aggregate Schemas
-
+## 📚 Registering Schemas
 ```ts
-// src/schemas/index.ts
-import { SchemaRegistry } from "unstrap";
-import userSchema from './user';
+src/schemas/index.ts
+
+import { SchemaRegistry } from "loompi";
+import userSchema from "./user";
 
 export const schemas: SchemaRegistry = {
-    "api::user.user": userSchema , // note the schema key, it should be the same as controller key, we will use this shared key in factory
+  "api::user.user": userSchema,
 } as const;
-
 ```
+## 🧩 Creating a Controller
+```ts
+src/api/users/controllers/user.ts
 
-The schema defines:
-- tableName → database table (Drizzle ORM)
-- validation → Zod validation for insert and update
-- info → display names for frontend or admin use
-
-
-### Example: CRUD Controller
-```ts   
 import { factories } from "@/lib/factories";
+
 export default factories.createCoreController("api::user.user", () => ({
-    async me(ctx) {
-
-        return ctx.res.json({
-            me: 'nurbxfit'
-        }, 418)
-    }
+  async me(ctx) {
+    return ctx.res.json({ user: 'example-user' }, 418);
+  }
 }));
-
 ```
-his allows you to create standard CRUD endpoints quickly, while still supporting custom logic.
 
-### Example: Routes
-You can define routes similarly using a factory pattern:
+This gives you controllers handler for all the standard CRUD operations, plus a custom `me` method.
 
+## 🛣️ Generating Routes
 ```ts
-// src/api/users/routes/user.ts
+src/api/users/routes/user.ts
 
 import { factories } from "@/lib/factories";
 
-export default factories.createCoreRoutes("api::user.user")
-
+export default factories.createCoreRoutes("api::user.user");
 ```
 
-### Example: Custom Route
+This gives you routes for all the standard CRUD operations:
+```
+GET /users
+GET /users/:id
+POST /users
+PUT /users/:id
+DELETE /users/:id
+```
 
+
+## 🧪 Adding Custom Routes
 ```ts
-// src/api/users/routes/custom-user.ts
-
-import { createCustomRoutes } from "unstrap";
+import { createCustomRoutes } from "loompi";
 
 export default createCustomRoutes([
-    {
-        method: 'GET',
-        path: '/users/me',
-        handler: "api::user.user.me",
-        config: {
-            middlewares: [],
-            policies: []
-        }
-    }
-])
+  {
+    method: "GET",
+    path: "/users/me",
+    handler: "api::user.user.me",
+    config: { middlewares: [], policies: [] }
+  }
+]);
 ```
+here we define a custom route that maps to the `me` controller method we defined earlier.
 
-# Stitching it Together
-In each modules/resource collection, you will have a `controllers` and `routes` folder and an index.ts
-example folder structure:
+noticed that we give `"api::user.user.me"` as the handler string, which follows the pattern of "resource.controller.method".
 
-```
-src/
- ├─ api/
- │   └─ users/
- │       ├─ controllers/
- │       │    └─ user.ts
- │       ├─ routes/
- │       │    ├─ user.ts
- │       │    └─ custom-user.ts
- │       └─ index.ts # here we stitch it all together
-```
-In the `index.ts`, you can stich it up together into a router by calling the createRouter factory:
-
+## 🔗 Stitching Everything Together
 ```ts
-import { createRouter } from "@unstrap/hono";
+src/api/users/index.ts
+
+import { createRouter } from "@loompi/hono";
 import { Hono } from "hono";
-import userRoutes from '@/api/users/routes/user';
-import customUserRoutes from '@/api/users/routes/custom-user';
-import userController from '@/api/users/controllers/user';
-import { ControllerRegistry, CoreController } from "unstrap";
+
+import userRoutes from "./routes/user";
+import customUserRoutes from "./routes/custom-user";
+import userController from "./controllers/user";
+
+import { ControllerRegistry, CoreController } from "loompi";
 
 const controllers: ControllerRegistry = {
-    "api::user.user": userController as CoreController
-}
+  "api::user.user": userController as CoreController,
+};
+
 const app = new Hono();
 
-const router = createRouter(app, [customUserRoutes, userRoutes], controllers)
+const router = createRouter(app, [customUserRoutes, userRoutes], controllers);
 
 export default router;
 ```
 
-This keeps your API modular, easy to setup and organized.
+## 🧠 Philosophy
 
-## Philosophy
+- Bring your own stack – framework, ORM, router, auth
+- Strapi-like DX – without the monolith
+- Convention over configuration – define a schema, get CRUD
+- Full override control – controllers and routes are extendable
+- Clean folder structure – each resource stands on its own
 
-- Modular – each resource has its own controller and routes.
-- Factory-driven – generate CRUD endpoints automatically, extendable with custom logic.
-- Developer-friendly – inspired by Strapi but framework-agnostic (adaptable).
+## 🧩 Adapter Overview
+| Package           | Purpose                                    |
+| ----------------- | ------------------------------------------ |
+| `loompi`          | Core schema, controller, filtering logic   |
+| `@loompi/hono`    | Router factory for Hono                    |
+| `@loompi/drizzle` | Repository + query adapter for Drizzle ORM |
+
+
+More adapters planned. (express, fastify, prisma, kysely, etc.)
+
+
+## 🗺️ Roadmap
+
+- 🔜 Prisma adapter
+- 🔜 Kysely adapter
+- 🔜 Express / Fastify routers adapter
+- 🔜 Relations (populate / expand)
+- 🔜 Admin UI generator (experimental)
+
+## 💬 Questions / Feedback
+
+Feel free to open a GitHub issue or start a discussion — feedback is extremely welcome during the early alpha phase.

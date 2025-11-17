@@ -1,4 +1,4 @@
-import { createCustomRoutes } from "unstrap";
+import { createCustomRoutes } from "loompi";
 
 export default createCustomRoutes([
     {

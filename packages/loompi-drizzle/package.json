@@ -1,15 +1,15 @@
 {
-    "name": "@unstrap/hono",
+    "name": "@loompi/drizzle",
     "version": "0.1.0",
-    "description": "Hono framework adapter for unstrap",
+    "description": "Drizzle ORM adapter for loompi",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.js"
+            "require": "./dist/index.js",
+            "import": "./dist/index.mjs"
         }
     },
     "files": [
@@ -21,20 +21,20 @@
         "clean": "rm -rf dist"
     },
     "dependencies": {
-        "unstrap": "workspace:*"
+        "loompi": "workspace:*"
     },
     "peerDependencies": {
-        "hono": "^4.0.0"
+        "drizzle-orm": "^0.44.7"
     },
     "devDependencies": {
-        "hono": "^4.0.0",
+        "drizzle-orm": "^0.44.7",
         "tsup": "8.5.1",
         "typescript": "^5.9.3"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/nurbxfit/unstrap",
-        "directory": "packages/unstrap-hono"
+        "url": "https://github.com/nurbxfit/loompi",
+        "directory": "packages/loompi-drizzle"
     },
     "license": "MIT"
 }

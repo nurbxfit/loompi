@@ -211,7 +211,7 @@ export interface SchemaDefinition<TTable = any> extends SchemaConfig<TTable> {
 
 
 // === FOR STANDARDISE ERROR FORMAT ==== 
-// packages/unstrap/src/types.ts
+// packages/loompi/src/types.ts
 export interface ErrorResponse {
     error: {
         message: string; //'Invalid request format',
