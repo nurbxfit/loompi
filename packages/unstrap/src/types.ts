@@ -183,3 +183,21 @@ export interface SchemaDefinition<TTable = any> extends SchemaConfig<TTable> {
     // Additional runtime properties added by factory
     _validated: true;
 }
+
+
+// === FOR STANDARDISE ERROR FORMAT ==== 
+// packages/unstrap/src/types.ts
+export interface ErrorResponse {
+    error: {
+        message: string; //'Invalid request format',
+        details?: any; // 'Request body must contain a "data" field',
+        statusCode?: number; // 400,
+        fields?: Array<{
+            field: string;
+            message: string;
+            code: string;
+        }>;
+        example?: any;
+    };
+}
+
