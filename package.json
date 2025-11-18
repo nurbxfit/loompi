@@ -13,6 +13,7 @@
     "lint": "turbo run lint",
     "clean": "turbo run clean",
     "example:hono": "bun --filter @example/hono-app dev",
+    "example:express": "bun --filter @example/express-app dev",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "turbo run build && changeset publish"
