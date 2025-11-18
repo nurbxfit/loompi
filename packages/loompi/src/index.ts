@@ -10,6 +10,8 @@ export * from './request-parser'
 export * from './schema'
 export * from './utils'
 export * from './registry'
+export * from './controller-helper';
+
 
 // just for convenience
 export { createCoreController } from './controller'

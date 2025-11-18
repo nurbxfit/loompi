@@ -28,13 +28,13 @@ export default defineSchema({
                 name: z.string(),
                 description: z.string(),
                 SKU: z.string().min(3),
-            }).omit({ id: true, createdAt: true, emailVerified: true }).strict(),
+            }).omit({ id: true, createdAt: true }).strict(),
             update: createInsertSchema(product, {
                 name: z.string(),
                 description: z.string(),
                 SKU: z.string().min(3),
                 image: z.url(),
-            }).omit({ id: true, createdAt: true, emailVerified: true }).partial().strict(),
+            }).omit({ id: true, createdAt: true }).partial().strict(),
         }
     }
 
