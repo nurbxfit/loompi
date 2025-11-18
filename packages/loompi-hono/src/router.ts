@@ -21,14 +21,14 @@ export function createRouter(
          * TODO: Need to decide if middleware receive 
          * our requestContext or hono context.
          */
-        // const honoMiddleware = middlewares.map(mw => {
-        //     return async (c: Context, next: () => Promise<void>) => {
-        //         const ctx = honoToRequestContextAdapter(c);
-        //         await mw(ctx, next);
-        //     }
-        // })
+        const honoMiddleware = middlewares.map(mw => {
+            return async (c: Context, next: () => Promise<void>) => {
+                const ctx = honoToRequestContextAdapter(c);
+                await mw(ctx, next);
+            }
+        })
 
-        app[method](path, ...middlewares, honoHandler);
+        app[method](path, ...honoMiddleware, honoHandler);
     });
 
     return app;

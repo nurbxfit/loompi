@@ -17,8 +17,8 @@ export interface RouteConfig {
 export type PolicyConfig = string | { name: string; config?: any } | PolicyHandler;
 export type MiddlewareConfig = string | { name: string; config?: any } | MiddlewareHandler;
 
-export type PolicyHandler = (ctx: any, next: () => Promise<void>) => Promise<boolean | void>;
-export type MiddlewareHandler = (ctx: any, next: () => Promise<void>) => Promise<void>;
+export type PolicyHandler = (ctx: RequestContext, next: () => Promise<void>) => Promise<boolean | void>;
+export type MiddlewareHandler = (ctx: RequestContext, next: () => Promise<void>) => Promise<void>;
 
 export interface RouteDefinition {
     routes: RouteSpec[];

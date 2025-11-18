@@ -1,0 +1,52 @@
+{
+    "name": "@loompi/express",
+    "version": "0.1.0",
+    "description": "Express framework adapter for loompi",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "loompi": "workspace:*"
+    },
+    "peerDependencies": {
+        "express": "^5.1.0"
+    },
+    "peerDependenciesMeta": {
+        "multer": {
+            "optional": true
+        },
+        "@sliit-foss/express-http-context": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "express": "^5.1.0",
+        "multer": "^2.0.2",
+        "@sliit-foss/express-http-context": "^2.0.0",
+        "tsup": "8.5.1",
+        "typescript": "^5.9.3",
+        "@types/express": "^5.0.5",
+        "@types/multer": "^1.4.12"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nurbxfit/loompi",
+        "directory": "packages/loompi-express"
+    },
+    "license": "MIT"
+}
