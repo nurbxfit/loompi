@@ -11,8 +11,13 @@ export * from './factory'
 export * from './request-parser'
 export * from './schema'
 export * from './utils'
+export * from './registry'
 
 // just for convenience
 export { createCoreController } from './controller'
 export { createRouterMappings } from './router'
 export { createCoreRoutes, createCustomRoutes } from './route'
+export {
+    createResource,
+    createResourceRegistry
+} from './registry'
