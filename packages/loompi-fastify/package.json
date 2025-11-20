@@ -1,0 +1,50 @@
+{
+    "name": "@loompi/fastify",
+    "version": "0.1.0",
+    "description": "fastify framework adapter for loompi",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "clean": "rm -rf dist"
+    },
+    "dependencies": {
+        "loompi": "workspace:*"
+    },
+    "peerDependencies": {
+        "fastify": "^5.6.2"
+    },
+    "peerDependenciesMeta": {
+        "@fastify/multipart": {
+            "optional": true
+        },
+        "@fastify/request-context": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "fastify": "^5.6.2",
+        "@fastify/request-context": "^6.2.1",
+        "@fastify/multipart": "^9.3.0",
+        "tsup": "8.5.1",
+        "typescript": "^5.9.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nurbxfit/loompi",
+        "directory": "packages/loompi-fastify"
+    },
+    "license": "MIT"
+}

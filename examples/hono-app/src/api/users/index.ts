@@ -10,6 +10,6 @@ const controllers: ControllerRegistry = {
 }
 const app = new Hono();
 
-const router = createRouter(app, [customUserRoutes, userRoutes], controllers)
+const router = createRouter([customUserRoutes, userRoutes], controllers)
 
 export default router;

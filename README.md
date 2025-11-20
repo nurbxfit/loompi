@@ -158,7 +158,7 @@ const { routes, controllers } = createResourceRegistry(factories, [
     { schemaName: "api::user.user" }
 ])
 
-export default createRouter(new Hono(), routes, controllers);
+export default createRouter(routes, controllers);
 
 ```
 
@@ -355,8 +355,9 @@ const controllers: ControllerRegistry = {
   "api::user.user": userController as CoreController,
 };
 
-const app = new Hono();
-const router = createRouter(app, [customUserRoutes, userRoutes], controllers);
+
+
+const router = createRouter([customUserRoutes, userRoutes], controllers);
 
 export default router;
 ```
@@ -414,19 +415,191 @@ export const mockRepoFactory: RepositoryFactory = (schemaName: string) => {
 | ----------------- | ------------------------------------------ |
 | `loompi`          | Core schema, controller, filtering logic   |
 | `@loompi/hono`    | Router factory for Hono                    |
+| `@loompi/express` | Router factory for Express                 |
+| `@loompi/fastify` | Router factory for Fastify                 |
 | `@loompi/drizzle` | Repository + query adapter for Drizzle ORM |
 
 
-More adapters planned. (express, fastify, prisma, kysely, etc.)
+More adapters planned. (prisma, kysely, etc.)
+
+## Framework Adapter Examples
+
+### 🟦 Hono Adapter (@loompi/hono)
+
+Installation
+```bash
+bun add @loompi/hono
+```
+
+Usage
+```ts 
+// src/api/users/index.ts
+import { Hono } from 'hono';
+import { createRouter } from '@loompi/hono';
+import { createResourceRegistry } from 'loompi';
+import { factories } from '@/lib/factories';
+
+const { routes, controllers } = createResourceRegistry(factories, [
+  { schemaName: 'api::user.user' }
+]);
+
+
+const usersRouter = createRouter(routes, controllers);
+
+export default usersRouter;
+```
+
+in your main server file.
+
+```ts
+// src/server.ts
+import { Hono } from 'hono';
+import { logger } from 'hono/logger';
+import usersModule from './api/users';
+
+const app = new Hono();
+
+app.use('*', logger());
+
+app.route('/api', usersModule);
+
+export default app;
+```
+
+### 🟩 Fastify Adapter (@loompi/fastify)
+
+Installation
+```bash
+bun add @loompi/fastify @fastify/request-context @fastify/multipart
+```
+Create router
+```ts
+// src/api/users/index.ts
+import { createRouter } from '@loompi/fastify';
+import { createResourceRegistry } from 'loompi';
+import { factories } from '@/lib/factories';
+
+const { routes, controllers } = createResourceRegistry(factories, [
+  { schemaName: 'api::user.user' }
+]);
+
+export default createRouter(routes, controllers, {
+  prefix: '/api',
+  useRequestContext: true,
+  useMultipart: true
+});
+
+```
+
+in you main server file.
+
+```ts
+// src/server.ts
+import Fastify from 'fastify';
+import fastifyRequestContext from '@fastify/request-context';
+import fastifyMultipart from '@fastify/multipart';
+import { registerFastifyRouter } from '@loompi/fastify';
+import usersRouter from './api/users';
+
+const app = Fastify();
+
+await app.register(fastifyRequestContext, {
+  defaultStoreValues: { user: null }
+});
+
+await app.register(fastifyMultipart);
+
+registerFastifyRouter(app, usersRouter); // helper to register loompi router
+
+/**
+ * Alternatively, you can manually register routes:
+ * usersRouter.forEach(route => app.route(route));
+ * */
+
+await app.listen({ port: 3000 });
+
+```
+
+### 🟥 Express Adapter (@loompi/express)
+```bash
+bun add @loompi/express multer @sliit-foss/express-http-context
+```
+
+Create router
+```ts
+// src/api/users/index.ts
+import { createRouter } from '@loompi/express';
+import { createResourceRegistry } from 'loompi';
+import { factories } from '@/lib/factories';
+
+const { routes, controllers } = createResourceRegistry(factories, [
+  { schemaName: 'api::user.user' }
+]);
+
+export default createRouter(routes, controllers, {
+    useHttpContext: true,
+    useMulter: true,
+    multerConfig: {
+        limits: { fileSize: 5 * 1024 * 1024 }
+    }
+})
+
+```
+
+in your main server file.
+
+```ts
+// src/server.ts
+import express from 'express';
+import usersRouter from './api/users';
+
+const app = express();
+
+// Mount router
+app.use('/api', usersRouter);
+
+app.listen(3000, () => {
+  console.log('Server listening on http://localhost:3000/');
+});
+
+```
+
+## Database Adapters Examples
+
+### 🟫 Drizzle Adapter (@loompi/drizzle)
+
+Installation
+```bash
+bun add @loompi/drizzle drizzle drizzle-zod
+```
+
+Setup Repository Factory
+```ts
+// src/lib/factories.ts
+import { createFactory } from 'loompi';
+import { createDrizzleRepositoryFactory } from '@loompi/drizzle';
+import { db } from './database';
+import { schemas } from '@/schemas';
+
+
+const repository = createDrizzleRepositoryFactory(db, schemas, {
+    dialect: 'sqlite' // or 'postgres', 'mysql', etc.
+})
+
+export const factories = createFactory({
+    repository,
+    schemas
+})
+```
+
+
 
 
 ## 🗺️ Roadmap
 
 - 🔜 Prisma adapter
 - 🔜 Kysely adapter
-- 🔜 Express / Fastify routers adapter
 - 🔜 Relations (populate / expand)
-- 🔜 Admin UI generator (experimental)
 
 ## 💬 Questions / Feedback
 

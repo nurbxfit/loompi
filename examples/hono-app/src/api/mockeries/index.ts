@@ -64,10 +64,7 @@ const { routes, controllers } = createResourceRegistry(factories, [
     },
 ])
 
-
-const app = new Hono();
-
-const router = createRouter(app, routes, controllers);
+const router = createRouter(routes, controllers);
 
 export default router;
 
