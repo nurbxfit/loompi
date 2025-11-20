@@ -23,4 +23,4 @@ await fastify.register(fastifyMultipart, {
 registerFastifyRouter(fastify, userRouter);
 
 
-await fastify.listen({ port: 3001 });
+await fastify.listen({ port: 3000 });

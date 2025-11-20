@@ -7,7 +7,6 @@ const { routes, controllers } = createResourceRegistry(factories, [
     {
         schemaName: "api::user.user",
         routeOptions: {
-            only: ["find", "findOne"],
             config: {
                 find: {
                     middlewares: [
