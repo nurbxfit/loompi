@@ -1,0 +1,26 @@
+{
+    "name": "@example/fastify-app",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "bun run --hot src/index.ts",
+        "build": "bun build src/index.ts --outdir dist --target=bun"
+    },
+    "dependencies": {
+        "@loompi/drizzle": "workspace:*",
+        "@loompi/fastify": "workspace:*",
+        "drizzle-orm": "^0.44.7",
+        "drizzle-zod": "^0.8.3",
+        "fastify": "^5.1.0",
+        "multer": "^2.0.2",
+        "@fastify/request-context": "^6.2.1",
+        "@fastify/multipart": "^9.3.0",
+        "loompi": "workspace:*",
+        "zod": "4.1.12"
+    },
+    "devDependencies": {
+        "@types/bun": "latest",
+        "better-sqlite3": "^12.4.1",
+        "drizzle-kit": "^0.31.7"
+    }
+}
