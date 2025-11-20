@@ -5,10 +5,10 @@ import { createMiddleware } from "hono/factory";
 
 
 export function createRouter(
-    app: Hono,
     routeDefinitions: RouteDefinition[],
     controllers: ControllerRegistry
 ): Hono {
+    const app = new Hono()
     const mappings = createRouterMappings(routeDefinitions, controllers);
     mappings.forEach((mappings) => {
         const { method, path, handler, middlewares } = mappings

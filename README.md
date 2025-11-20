@@ -414,6 +414,8 @@ export const mockRepoFactory: RepositoryFactory = (schemaName: string) => {
 | ----------------- | ------------------------------------------ |
 | `loompi`          | Core schema, controller, filtering logic   |
 | `@loompi/hono`    | Router factory for Hono                    |
+| `@loompi/express` | Router factory for Express                 |
+| `@loompi/fastify` | Router factory for Fastify                 |
 | `@loompi/drizzle` | Repository + query adapter for Drizzle ORM |
 
 
@@ -424,9 +426,7 @@ More adapters planned. (express, fastify, prisma, kysely, etc.)
 
 - 🔜 Prisma adapter
 - 🔜 Kysely adapter
-- 🔜 Express / Fastify routers adapter
 - 🔜 Relations (populate / expand)
-- 🔜 Admin UI generator (experimental)
 
 ## 💬 Questions / Feedback
 

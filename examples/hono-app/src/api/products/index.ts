@@ -8,5 +8,5 @@ const { routes, controllers } = createResourceRegistry(factories, [
     { schemaName: "api::product.product" }
 ])
 
-export default createRouter(new Hono(), routes, controllers);
+export default createRouter(routes, controllers);
 
