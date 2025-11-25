@@ -2,6 +2,7 @@
     "name": "@loompi/drizzle",
     "version": "0.0.1-alpha.0",
     "description": "Drizzle ORM adapter for loompi",
+    "type": "module",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
