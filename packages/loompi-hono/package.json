@@ -1,6 +1,6 @@
 {
     "name": "@loompi/hono",
-    "version": "0.0.1-alpha.0",
+    "version": "0.0.1-alpha.1",
     "description": "Hono framework adapter for loompi",
     "type": "module",
     "main": "./dist/index.js",

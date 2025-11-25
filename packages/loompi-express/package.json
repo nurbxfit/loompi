@@ -1,6 +1,6 @@
 {
     "name": "@loompi/express",
-    "version": "0.0.1-alpha.0",
+    "version": "0.0.1-alpha.1",
     "description": "Express framework adapter for loompi",
     "type": "module",
     "main": "./dist/index.js",

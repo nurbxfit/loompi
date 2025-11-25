@@ -1,6 +1,6 @@
 {
     "name": "@example/hono-app",
-    "version": "0.0.0",
+    "version": "0.0.1-alpha.0",
     "private": true,
     "scripts": {
         "dev": "bun run --hot src/index.ts",
