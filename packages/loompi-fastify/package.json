@@ -48,5 +48,8 @@
         "url": "https://github.com/nurbxfit/loompi",
         "directory": "packages/loompi-fastify"
     },
+    "publishConfig": {
+        "access": "public"
+    },
     "license": "MIT"
 }

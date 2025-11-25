@@ -38,5 +38,8 @@
         "url": "https://github.com/nurbxfit/loompi",
         "directory": "packages/loompi-drizzle"
     },
+    "publishConfig": {
+        "access": "public"
+    },
     "license": "MIT"
 }
