@@ -1,6 +1,6 @@
 {
     "name": "@loompi/fastify",
-    "version": "0.1.0",
+    "version": "0.0.1-alpha.0",
     "description": "fastify framework adapter for loompi",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
@@ -18,7 +18,7 @@
     "scripts": {
         "build": "tsup",
         "dev": "tsup --watch",
-        "clean": "rm -rf dist"
+        "clean": "rimraf dist"
     },
     "dependencies": {
         "loompi": "workspace:*"
@@ -39,7 +39,8 @@
         "@fastify/request-context": "^6.2.1",
         "@fastify/multipart": "^9.3.0",
         "tsup": "8.5.1",
-        "typescript": "^5.9.3"
+        "typescript": "^5.9.3",
+        "rimraf": "^6.1.2"
     },
     "repository": {
         "type": "git",
